@@ -6,14 +6,14 @@ const txtPrice = $("#txt-price");
 const txtStock = $("#txt-stock");
 const btnSave = $("#btn-save");
 
+tbodyElm.empty();
+
+function formatItemId(id) {
+    return `C${id.toString().padStart(3, '0')}`;
+}
+
 [txtDescription, txtPrice, txtStock].forEach(txtElm =>
     $(txtElm).addClass('animate__animated'));
-
-const id = txtId.val().trim();
-const description = txtDescription.val().trim();
-const price = txtPrice.val().trim();
-const stock = txtStock.val().trim();
-
 
 btnSave.on('click', () => {
     if (!validateData()) {
@@ -36,18 +36,18 @@ btnSave.on('click', () => {
     const xhr = new XMLHttpRequest();
 
     /* 2. Set an event listener to listen readystatechange */
-    xhr.addEventListener('readystatechange', ()=> {
-        if (xhr.readyState === 4){
-            [txtName, txtAddress, txtContact, btnSave].forEach(elm => elm.removeAttr('disabled'));
+    xhr.addEventListener('readystatechange', () => {
+        if (xhr.readyState === 4) {
+            [txtDescription, txtPrice, txtStock, btnSave].forEach(elm => elm.removeAttr('disabled'));
             $("#loader").css('visibility', 'hidden');
-            if (xhr.status === 201){
-                customer = JSON.parse(xhr.responseText);
+            if (xhr.status === 201) {
+                item = JSON.parse(xhr.responseText);
                 tbodyElm.append(`
                     <tr>
-                        <td class="text-center">${formatCustomerId(customer.id)}</td>
-                        <td>${customer.name}</td>
-                        <td class="d-none d-xl-table-cell">${customer.address}</td>
-                        <td class="contact text-center">${customer.contact}</td>
+                        <td class="text-center">${formatCustomerId(item.id)}</td>
+                        <td>${item.description}</td>
+                        <td class="d-none d-xl-table-cell">${item.quantity}</td>
+                        <td class="contact text-center">${item.price}</td>
                         <td>
                             <div class="actions d-flex gap-3 justify-content-center">
                                 <svg data-bs-toggle="tooltip" data-bs-title="Edit Customer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -72,44 +72,45 @@ btnSave.on('click', () => {
                 resetForm(true);
                 txtName.trigger('focus');
                 showToast('success', 'Saved', 'Customer has been saved successfully');
-            }else{
+            } else {
                 const errorObj = JSON.parse(xhr.responseText);
                 showToast('error', 'Failed to save', errorObj.message);
             }
         }
     });
 
- function validateData() {
-    const address = txtAddress.val().trim();
-    const contact = txtContact.val().trim();
-    const name = txtName.val().trim();
-    let valid = true;
-    resetForm();
+    function validateData() {
+        const description = txtDescription.val().trim();
+        const price = txtPrice.val().trim();
+        const stock = txtStock.val().trim();
+        let valid = true;
+        resetForm();
 
-    if (!address) {
-        valid = invalidate(txtAddress, "Address can't be empty");
-    } else if (!/.{3,}/.test(address)) {
-        valid = invalidate(txtAddress, 'Invalid address');
+        if (!description) {
+            valid = invalidate(txtDescription, "Description can't be empty");
+        } else if (!/.{3,}/.test(description)) {
+            valid = invalidate(txtDescription, 'Invalid description');
+        }
+
+        if (!price) {
+            valid = invalidate(txtPrice, "price can't be empty");
+        } else if (!/^\d{2,}$/.test(txtPrice)) {
+            valid = invalidate(txtPrice, 'Invalid price');
+        }
+
+        if (!stock) {
+            valid = invalidate(txtStock, "stock can't be empty");
+        } else if (!/\d+$/.test(txtStock)) {
+            valid = invalidate(txtStock, "Invalid stock");
+        }
+
+        return valid;
     }
+});
 
-    if (!contact) {
-        valid = invalidate(txtContact, "Contact number can't be empty");
-    } else if (!/^\d{3}-\d{7}$/.test(contact)) {
-        valid = invalidate(txtContact, 'Invalid contact number');
+    function invalidate(txt, msg) {
+        setTimeout(() => txt.addClass('is-invalid animate__shakeX'), 0);
+        txt.trigger('select');
+        txt.next().text(msg);
+        return false;
     }
-
-    if (!name) {
-        valid = invalidate(txtName, "Name can't be empty");
-    } else if (!/^[A-Za-z ]+$/.test(name)) {
-        valid = invalidate(txtName, "Invalid name");
-    }
-
-    return valid;
-}
-
-function invalidate(txt, msg) {
-    setTimeout(() => txt.addClass('is-invalid animate__shakeX'), 0);
-    txt.trigger('select');
-    txt.next().text(msg);
-    return false;
-}
