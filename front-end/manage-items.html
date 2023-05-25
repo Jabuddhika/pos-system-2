@@ -20,7 +20,7 @@
 
 
 </head>
-<body>
+<body class="container-xl gx-0 border-end border-start" >
 
     <nav>
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
@@ -91,30 +91,30 @@
 
     <main>
         <section class="d-flex justify-content-between border-bottom p-2">
-            <h2 class="m-0 align-self-center">Manage Customers</h2>
+            <h2 class="m-0 align-self-center">Manage Items</h2>
             <button id="btn-new-customer" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#new-customer-modal">New Customer</button>
+                    data-bs-target="#new-customer-modal">New Item</button>
         </section>
         <section class="p-2">
-            <input class="form-control text-center" type="text" placeholder="Search Customer">
+            <input class="form-control text-center" type="text" placeholder="Search Items">
         </section>
         <section class="p-2">
             <table id="tbl-customers" class="table table-hover table-bordered">
                 <thead class="table-light">
                 <tr>
-                    <th class="text-center">ID</th>
-                    <th>Name</th>
-                    <th class="d-none d-xl-table-cell">Address</th>
-                    <th class="contact text-center">Contact</th>
+                    <th class="text-center">CODE</th>
+                    <th>Description</th>
+                    <th class="d-none d-xl-table-cell">Quantity</th>
+                    <th class="contact text-center">price</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="text-center">C001</td>
-                    <td>Kasun Sampath</td>
-                    <td class="d-none d-xl-table-cell">Grace Peries Road, Panadura</td>
-                    <td class="contact text-center">077-1234567</td>
+                    <td class="text-center">I001</td>
+                    <td>Biscute</td>
+                    <td class="d-none d-xl-table-cell">10</td>
+                    <td class="contact text-center">345</td>
                     <td>
                         <div class="actions d-flex gap-3 justify-content-center">
                             <svg data-bs-toggle="tooltip" data-bs-title="Edit Customer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -137,7 +137,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td class="text-center" colspan="5">No customer records are found!</td>
+                    <td class="text-center" colspan="5">No Items records are found!</td>
                 </tr>
                 </tfoot>
             </table>
