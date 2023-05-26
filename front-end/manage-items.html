@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/manage-customers.css">
+<!--    <link rel="stylesheet" href="css/manage-customers.css">-->
     <link rel="stylesheet" href="css/manage-items.css">
     <script defer src="node_modules/jquery/dist/jquery.min.js"></script>
     <script defer src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script defer src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script defer src="js/main.js"></script>
-    <script defer type="module" src="js/manage-customers.js"></script>
+<!--    <script defer type="module" src="js/manage-customers.js"></script>-->
     <script defer type="module" src="js/manage-items.js"></script>
 
 
@@ -150,32 +150,32 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Add New Items</h1>
+                    <h1 class="modal-title fs-5">Add New Item</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <div class="mb-3">
                         <label for="txt-id" class="form-label">Item ID</label>
-                        <input type="text" class="form-control text-center" id="txt-id" placeholder="I001"
+                        <input type="text" class="form-control text-center" id="txt-id" placeholder="Generated ID"
                                disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="txt-description" class="form-label">Item-Description</label>
-                        <input type="text" class="form-control text-center" id="txt-description" placeholder="Eg. Maliban Biscut">
+                        <label for="txt-description" class="form-label">Description</label>
+                        <input type="text" class="form-control text-center" id="txt-description" placeholder="Eg. Maliban">
                         <div class="invalid-feedback">
                             Name can't be empty
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="txt-price" class="form-label">Unit price</label>
-                        <input type="text" class="form-control text-center" id="txt-price" placeholder="Eg. 0.0">
+                        <input type="text" class="form-control text-center" id="txt-price" placeholder="Eg. 0.00">
                         <div class="invalid-feedback">
                             Contact can't be empty
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="txt-stock" class="form-label">Initial stock</label>
-                        <input type="text" class="form-control text-center" id="txt-stock" placeholder="Eg. 0.0">
+                        <label for="txt-quantity" class="form-label">Initial Quantity</label>
+                        <input type="text" class="form-control text-center" id="txt-quantity" placeholder="Eg. 0.0">
                         <div class="invalid-feedback">
                             Address can't be empty
                         </div>
@@ -185,7 +185,7 @@
                     <div id="loader">
                         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                     </div>
-                    <button id="btn-save" type="button" class="btn btn-primary">Oder</button>
+                    <button id="btn-save" type="button" class="btn btn-primary">Ok</button>
                 </div>
             </div>
         </div>

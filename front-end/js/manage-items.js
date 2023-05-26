@@ -3,7 +3,7 @@ const modalElm = $("#new-customer-modal");
 const txtId = $("#txt-id");
 const txtDescription = $("#txt-description");
 const txtPrice = $("#txt-price");
-const txtStock = $("#txt-stock");
+const txtStock = $("#txt-quantity");
 const btnSave = $("#btn-save");
 
 tbodyElm.empty();
@@ -22,13 +22,14 @@ btnSave.on('click', () => {
 
     const id = txtId.val().trim();
     const description = txtDescription.val().trim();
-    const price = txtPrice.val().trim();
-    const stock = txtStock.val().trim();
+    const price = +txtPrice.val();
+    const stock = +txtStock.val();
 
-    let Items = {
+    console.log(description,price,stock);
+
+    let item = {
         description, price, stock
     };
-
 
     /* Todo: Send a request to the server to save the customer */
 
@@ -36,18 +37,18 @@ btnSave.on('click', () => {
     const xhr = new XMLHttpRequest();
 
     /* 2. Set an event listener to listen readystatechange */
-    xhr.addEventListener('readystatechange', () => {
-        if (xhr.readyState === 4) {
+    xhr.addEventListener('readystatechange', ()=> {
+        if (xhr.readyState === 4){
             [txtDescription, txtPrice, txtStock, btnSave].forEach(elm => elm.removeAttr('disabled'));
             $("#loader").css('visibility', 'hidden');
-            if (xhr.status === 201) {
+            if (xhr.status === 201){
                 item = JSON.parse(xhr.responseText);
                 tbodyElm.append(`
                     <tr>
                         <td class="text-center">${formatCustomerId(item.id)}</td>
                         <td>${item.description}</td>
-                        <td class="d-none d-xl-table-cell">${item.quantity}</td>
-                        <td class="contact text-center">${item.price}</td>
+                        <td class="d-none d-xl-table-cell">${item.price}</td>
+                        <td class="contact text-center">${item.stock}</td>
                         <td>
                             <div class="actions d-flex gap-3 justify-content-center">
                                 <svg data-bs-toggle="tooltip" data-bs-title="Edit Customer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -70,43 +71,56 @@ btnSave.on('click', () => {
                 `);
 
                 resetForm(true);
-                txtName.trigger('focus');
-                showToast('success', 'Saved', 'Customer has been saved successfully');
-            } else {
+                txtDescription.trigger('focus');
+                showToast('success', 'Saved', 'Item has been saved successfully');
+            }else{
                 const errorObj = JSON.parse(xhr.responseText);
                 showToast('error', 'Failed to save', errorObj.message);
             }
         }
     });
 
+    /* 3. Let's open the request */
+    xhr.open('POST', 'http://localhost:8080/pos/items', true);
+
+    /* 4. Let's set some request headers */
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    /* 5. Okay, time to send the request */
+    xhr.send(JSON.stringify(item));
+
+    [txtDescription, txtPrice, txtStock, btnSave].forEach(elm => elm.attr('disabled', 'true'));
+    $("#loader").css('visibility', 'visible');
+
+});
     function validateData() {
         const description = txtDescription.val().trim();
-        const price = txtPrice.val().trim();
-        const stock = txtStock.val().trim();
+        const price = txtPrice.val();
+        const stock = txtStock.val();
         let valid = true;
-        resetForm();
+         // resetForm();
 
         if (!description) {
             valid = invalidate(txtDescription, "Description can't be empty");
-        } else if (!/.{3,}/.test(description)) {
+        } else if (!/^.{3,}$/.test(txtDescription)) {
             valid = invalidate(txtDescription, 'Invalid description');
         }
 
         if (!price) {
             valid = invalidate(txtPrice, "price can't be empty");
-        } else if (!/^\d{2,}$/.test(txtPrice)) {
+        } else if (!/^.+$/.test(txtPrice)) {
             valid = invalidate(txtPrice, 'Invalid price');
         }
 
         if (!stock) {
             valid = invalidate(txtStock, "stock can't be empty");
-        } else if (!/\d+$/.test(txtStock)) {
+        } else if (!/.+$/.test(txtStock)) {
             valid = invalidate(txtStock, "Invalid stock");
         }
 
         return valid;
     }
-});
+
 
     function invalidate(txt, msg) {
         setTimeout(() => txt.addClass('is-invalid animate__shakeX'), 0);
@@ -114,3 +128,4 @@ btnSave.on('click', () => {
         txt.next().text(msg);
         return false;
     }
+

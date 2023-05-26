@@ -29,10 +29,10 @@ public class ItemController {
         }
         try (Connection connection = pool.getConnection()) {
             PreparedStatement stm = connection.prepareStatement
-                    ("INSERT INTO dep10_pos.item (description, quantity, price) VALUES (?,?,?)",
+                    ("INSERT INTO dep10_pos.item (dep10_pos.item.description, quantity, price) VALUES (?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
             stm.setString(1,item.getDescription() );
-            stm.setInt(2, item.getQuantity());
+            stm.setInt(2, item.getStock());
             stm.setInt(3, item.getPrice());
             stm.executeUpdate();
             ResultSet generatedKeys = stm.getGeneratedKeys();
